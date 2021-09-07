@@ -1,0 +1,1 @@
+java -p lib;lib\javafx-sdk-16\lib --add-modules=javafx.controls,javafx.fxml --class-path=classpath;classes;MavenEbay-0.0.1-SNAPSHOT-jar-with-dependencies.jar org.openjfx.MavenEbay.App -Dprism.verbose=true
