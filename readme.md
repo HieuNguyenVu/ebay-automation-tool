@@ -21,4 +21,4 @@ GUI and core are kept, features code are removed.
 You can implement them by yourself. If you want more source code, or need to make similar tools, feel free to contact me.
 ``nhvu.95@gmai.com``
 
-### GUI Images
+### 4.GUI Images
