@@ -48,29 +48,7 @@ public class AutoController {
 			driver = new ChromeDriver(options);
 			driver.navigate().to("https://www.ebay.com/");
 
-			waitUntil(By.cssSelector("form:first-child"));
-			waitUntil(By.cssSelector("div#mainContent"));
-
-			List<String> keySearchs = Arrays.asList(PropertiesController.getPropertyAsString("taKeySearch").split(","))
-					.stream().map(key -> key.trim()).collect(Collectors.toList());
-
-			while (keySearchs.size() > 0) {
-				try {
-					int index = randomBetween(0, keySearchs.size() - 1);
-					String key = keySearchs.get(index);
-					keySearchs.remove(index);
-					waitFor(1000, 1000);
-					enterKeySearch(key);
-					waitFor(PropertiesController.getPropertyAsInt("timeWaitAfterSearchMin"),
-							PropertiesController.getPropertyAsInt("timeWaitAfterSearchMax"));
-					viewSearchResult();
-					waitFor(2000, 3000);
-					clickOnProduct();
-				} catch (Exception e) {
-					LOGGER.error(e.toString());
-					driver.navigate().to("https://www.ebay.com/");
-				}
-			}
+			// Your implement here!
 
 		} catch (Exception e) {
 			LOGGER.error(e.toString());
@@ -151,120 +129,25 @@ public class AutoController {
 
 	public void enterKeySearch(String key) {
 		LOGGER.debug(String.format("enterKeySearch(String %s)", key));
-		WebElement searchBar = waitUntil(By.xpath("//*[@id=\"gh-ac\"]"));
-		searchBar.clear();
-		fakeTyping(key, searchBar);
-		waitFor(1000, 1500);
-		// click search
-		WebElement buttonSearch = waitUntil(By.xpath("//*[@id=\"gh-btn\"]"));
-		buttonSearch.click();
-		waitFor(3000, 4500);
+		// Your implement here!
 	}
 
 	@SuppressWarnings("deprecation")
 	public void viewSearchResult() {
 		LOGGER.debug(String.format("viewSearchResult()"));
-		int beakTime = 10000;
-		while (beakTime > 0) {
-			beakTime -= waitFor(500, 1000);
-			try {
-				java.awt.Robot robot = new java.awt.Robot();
-				robot.mouseMove(100, 300);
-				robot.mousePress(InputEvent.BUTTON1_MASK);
-				robot.mouseRelease(InputEvent.BUTTON1_MASK);
-
-				if (randomTrueFalse())
-					robot.keyPress(KeyEvent.VK_PAGE_UP);
-				else
-					robot.keyPress(KeyEvent.VK_PAGE_DOWN);
-			} catch (AWTException e) {
-				// TODO Auto-generated catch block
-				LOGGER.debug(e.toString());
-			}
-		}
-//Way 2
-//		JavascriptExecutor jse = (JavascriptExecutor)driver;
-//		jse.executeScript("window.scroll({  top: 100,  left: 100,  behavior: 'smooth'});");
+		// Your implement here!
 	}
 
 	public void backtoSearhResult() {
 		LOGGER.debug(String.format("backtoSearhResult()"));
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript(
-				"document.getElementById(\"smtBackToAnchorArrow\").scrollIntoView({behavior: \"smooth\", block: \"center\", inline: \"center\"});");
-		WebElement backButton = waitUntil(By.id("smtBackToAnchorArrow"));
-		waitFor(2000, 2000);
-		backButton.click();
-		waitFor(4000, 5000);
+		// Your implement here!
 	}
 
 	public void clickOnProduct() {
 		LOGGER.debug(String.format("clickOnProduct()"));
 		List<WebElement> elements = null;
 		try {
-			int timeToClickOnProduct = randomBetween(PropertiesController.getPropertyAsInt("timesClickToProductsMin"),
-					PropertiesController.getPropertyAsInt("timesClickToProductsMax"));
-			boolean isNeedToViewDetails = PropertiesController.getPropertyAsBool("isNeedToViewDetails");
-			boolean isNeedToViewFeedback = PropertiesController.getPropertyAsBool("isNeedToViewFeedback");
-			float ratioAddToWatchList = PropertiesController.getPropertyAsFloat("ratioAddToWatchList");
-			float ratioSaveThisSeller = PropertiesController.getPropertyAsFloat("ratioSaveThisSeller");
-			// Get result list type.
-			JavascriptExecutor jse = (JavascriptExecutor) driver;
-
-			elements = driver.findElements(By.cssSelector("#srp-river-results > ul > li.s-item"));
-			int size = elements.size();
-			while (timeToClickOnProduct >= 0) {
-				try {
-					int index = randomBetween(0, size - 1);
-//				WebElement selectElement = elements.get(index);
-					WebElement selectElement = getElementByJs("document.getElementsByClassName(\"s-item__image-wrapper\")[" + index +"];");
-					scrollToElement(selectElement);
-//					jse.executeScript("let tmp = document.getElementsByClassName(\"s-item__image-wrapper\")[" + index
-//							+ "];"
-//							+ "tmp.scrollIntoView({behavior: \"smooth\", block: \"center\", inline: \"center\"});"
-//							+ "tmp.click()");
-					selectElement.click();
-					waitFor(3000, 3000);
-					try {
-						viewImageOfProduct();
-					} catch (AWTException e) {
-						// TODO Auto-generated catch block
-						LOGGER.debug(e.toString());
-					}
-
-					waitFor(PropertiesController.getPropertyAsInt("timesWaitWhenViewImageMin"),
-							PropertiesController.getPropertyAsInt("timesWaitWhenViewImageMax"));
-					if (isNeedToViewDetails) {
-						viewDetailsOfProduct();
-					}
-					waitFor(PropertiesController.getPropertyAsInt("timesWaitAfterViewDetailsMin"),
-							PropertiesController.getPropertyAsInt("timesWaitAfterViewDetailsMax"));
-					if (isNeedToViewFeedback) {
-						viewFeedbackOfProduct();
-					}
-					waitFor(1000, 3000);
-					if (Math.random() <= ratioAddToWatchList) {
-						addToWatchList();
-					}
-					waitFor(1000, 3000);
-					if (Math.random() <= ratioSaveThisSeller) {
-						saveThisSeller();
-					}
-					waitFor(1000, 3000);
-					backtoSearhResult();
-
-					waitFor(2000, 3000);
-					elements = driver.findElements(By.cssSelector("#srp-river-results > ul > li.s-item"));
-					size = elements.size();
-
-					timeToClickOnProduct--;
-				} catch (Exception e) {
-					LOGGER.debug(e.toString());
-					waitFor(1000, 3000);
-					backtoSearhResult();
-					elements = driver.findElements(By.cssSelector("#srp-river-results > ul > li.s-item"));
-				}
-			}
+			// Your implement here!
 		} catch (Exception e) {
 			LOGGER.debug(e.toString());
 		}
@@ -272,57 +155,12 @@ public class AutoController {
 
 	public void viewImageOfProduct() throws AWTException {
 		LOGGER.debug(String.format("viewImageOfProduct()"));
-		// Get Image pane
-		WebElement imagePane = waitUntil(By.id("icImg"));
-		// Get product list
-		List<WebElement> productImages = driver.findElements(By.cssSelector("#vi_main_img_fs > ul > li"));
-		int timesViewImage = randomBetween(1, productImages.size());
-		LOGGER.debug(String.format("TOTAL IMAGE VIEW %d", timesViewImage));
-		WebElement nextButton = waitUntil(By.cssSelector("button.next-arr.navigation-image-arr"));
-
-		JavascriptExecutor jse = (JavascriptExecutor) driver;
-		jse.executeScript(
-				"document.getElementById(\"icImg\").scrollIntoView({behavior: \"smooth\", block: \"center\", inline: \"center\"});");
-		while (timesViewImage > 0) {
-			fakeMouseHover(imagePane);
-			waitFor(1000, 2000);
-			nextButton.click();
-			waitFor(500, 1000);
-			timesViewImage--;
-		}
+		// Your implement here!
 	}
 
 	public void viewDetailsOfProduct() {
 		LOGGER.debug(String.format("viewDetailsOfProduct()"));
-		try {
-			WebElement panelDetail = driver
-					.findElement(By.cssSelector("#BottomPanel > div.tabbable > div.tab-content-m"));
-			int panelHeigh = panelDetail.getRect().height;
-
-			driver.findElement(By.cssSelector("#BottomPanel > div.tabbable > ul > li:first-child"));
-
-			// After this command screen will scroll to detail.
-			JavascriptExecutor jse = (JavascriptExecutor) driver;
-			jse.executeScript(
-					"document.getElementById(\"viTabs_0\").scrollIntoView({behavior: \"smooth\", block: \"start\", inline: \"center\"});");
-			// This script will scroll over detail
-			String jsScript = "localStorage.setItem(\"viewDetailsOfProductFinish\",\"false\");\r\n"
-					+ "function getRandomInt(min, max) {\r\n" + "    min = Math.ceil(min);\r\n"
-					+ "    max = Math.floor(max);\r\n"
-					+ "    return Math.floor(Math.random() * (max - min + 1)) + min;\r\n" + "}\r\n" + "\r\n"
-					+ "let scroller = " + panelDetail.getRect().y + ";\r\n" + "let maxHeight = "
-					+ (panelDetail.getRect().y + panelHeigh) + ";\r\n" + "let windowHeight = window.innerHeight;\r\n"
-					+ "\r\n" + "function scrollFunc(){\r\n" + "	return new Promise((resolve) => {\r\n"
-					+ "    setTimeout(()=>{\r\n"
-					+ "        window.scroll({ top: scroller,  left: 0,  behavior: 'smooth'});\r\n"
-					+ "        scroller += getRandomInt(300,1000);\r\n" + "        resolve();\r\n"
-					+ "    },getRandomInt(500,2500))}); \r\n" + "};\r\n"
-					+ "while(scroller + windowHeight < maxHeight){\r\n" + "    await scrollFunc();\r\n" + "}"
-					+ "localStorage.setItem(\"viewDetailsOfProductFinish\",\"true\");";
-			jse.executeScript(jsScript);
-		} catch (Exception e) {
-			LOGGER.error(e.toString());
-		}
+		// Your implement here!
 
 	}
 
@@ -330,60 +168,7 @@ public class AutoController {
 	public void viewFeedbackOfProduct() {
 		LOGGER.debug(String.format("viewFeedbackOfProduct()"));
 		try {
-			WebElement soldWithFeedback = driver.findElement(By.cssSelector(".soldwithfeedback"));
-			if (soldWithFeedback != null) {
-				WebElement feedback = soldWithFeedback.findElement(By.cssSelector("span:last-child"));
-				feedback.click();
-				WebElement scroller = waitUntil(By.cssSelector("div.POSITIVE > div:nth-child(2) > div"));
-				Rectangle rtangle = scroller.getRect();
-				java.awt.Robot robot = new java.awt.Robot();
-				robot.mouseMove(rtangle.x + (rtangle.width / 2), rtangle.y + 30 + (rtangle.height / 2));
-				robot.mousePress(InputEvent.BUTTON1_MASK);
-				robot.mouseRelease(InputEvent.BUTTON1_MASK);
-				int wheelTime = 10;
-				while (wheelTime > 0) {
-					if (randomTrueFalse()) {
-						robot.mouseWheel(5);
-					} else {
-						robot.mouseWheel(-5);
-					}
-					waitFor(500, 1000);
-					wheelTime--;
-				}
-				waitFor(500, 1000);
-				WebElement neutrual = waitUntil(By.cssSelector("div.POSITIVE > div:nth-child(1) > div.neutral"));
-				neutrual.click();
-				robot.mouseMove(rtangle.x + (rtangle.width / 2), rtangle.y + 30 + (rtangle.height / 2));
-				robot.mousePress(InputEvent.BUTTON1_MASK);
-				robot.mouseRelease(InputEvent.BUTTON1_MASK);
-				wheelTime = 5;
-				while (wheelTime > 0) {
-					if (randomTrueFalse()) {
-						robot.mouseWheel(5);
-					} else {
-						robot.mouseWheel(-5);
-					}
-					waitFor(500, 1000);
-					wheelTime--;
-				}
-				WebElement negative = waitUntil(By.cssSelector("div.NEUTRAL > div:nth-child(1) > div.negative"));
-				negative.click();
-				robot.mouseMove(rtangle.x + (rtangle.width / 2), rtangle.y + 30 + (rtangle.height / 2));
-				robot.mousePress(InputEvent.BUTTON1_MASK);
-				robot.mouseRelease(InputEvent.BUTTON1_MASK);
-				wheelTime = 5;
-				while (wheelTime > 0) {
-					if (randomTrueFalse()) {
-						robot.mouseWheel(5);
-					} else {
-						robot.mouseWheel(-5);
-					}
-					waitFor(500, 1000);
-					wheelTime--;
-				}
-				WebElement clzButton = waitUntil(By.cssSelector("button.clzBtn"));
-				clzButton.click();
-			}
+			// Your implement here!
 		} catch (Exception e) {
 			LOGGER.error(e.toString());
 		}
@@ -392,10 +177,7 @@ public class AutoController {
 	public void addToWatchList() {
 		LOGGER.debug(String.format("addToWatchList()"));
 		try {
-			WebElement addToWatchList = waitUntil(By.id("watchWrapperId"));
-			scrollToElement(addToWatchList);
-			addToWatchList = waitUntil(By.id("watchWrapperId"));
-			addToWatchList.click();
+			// Your implement here!
 		} catch (Exception e) {
 			LOGGER.error(e.toString());
 		}
@@ -404,10 +186,7 @@ public class AutoController {
 	public void saveThisSeller() {
 		LOGGER.debug(String.format("saveThisSeller()"));
 		try {
-			WebElement saveThisSeller = waitUntil(By.cssSelector("#followSeller > div > a > span"));
-			scrollToElement(saveThisSeller);
-			saveThisSeller = waitUntil(By.cssSelector("#followSeller > div > a > span"));
-			saveThisSeller.click();
+			// Your implement here!
 		} catch (Exception e) {
 			LOGGER.error(e.toString());
 		}
